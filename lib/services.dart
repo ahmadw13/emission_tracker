@@ -25,7 +25,6 @@ class LocationService {
     double latitude = position.latitude;
     double longitude = position.longitude;
 
-    // Make a request to Mapbox API to get the address
     String apiKey =
         'pk.eyJ1IjoieGVvbjM5IiwiYSI6ImNsajdvNXFwbDB6dDEzZnBhbTE2bGNtczEifQ.4yj0YeVaKk7dBq5915DTAw';
     String apiUrl =
