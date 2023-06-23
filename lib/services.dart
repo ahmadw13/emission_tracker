@@ -5,7 +5,9 @@ import 'dart:async';
 class LocationService {
   static StreamSubscription<Position>? positionStreamSubscription;
 
-  static void startLocationUpdates() {
+  static void startLocationUpdates() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+
     positionStreamSubscription
         ?.cancel(); // Cancel any existing stream subscription
 
