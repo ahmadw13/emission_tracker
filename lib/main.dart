@@ -1,106 +1,71 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
-void main() {
-  runApp(const HomePageWidget());
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+import 'flutter_flow/flutter_flow_theme.dart';
+import 'flutter_flow/flutter_flow_util.dart';
+import 'flutter_flow/internationalization.dart';
+import 'flutter_flow/nav/nav.dart';
+import 'index.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  usePathUrlStrategy();
+
+  await FlutterFlowTheme.initialize();
+
+  runApp(MyApp());
 }
 
-class HomePageWidget extends StatelessWidget {
-  const HomePageWidget({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  static _MyAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>()!;
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+  ThemeMode _themeMode = FlutterFlowTheme.themeMode;
+
+  late AppStateNotifier _appStateNotifier;
+  late GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _appStateNotifier = AppStateNotifier.instance;
+    _router = createRouter(_appStateNotifier);
+  }
+
+  void setLocale(String language) {
+    setState(() => _locale = createLocale(language));
+  }
+
+  void setThemeMode(ThemeMode mode) => setState(() {
+        _themeMode = mode;
+        FlutterFlowTheme.saveThemeMode(mode);
+      });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF19DADF),
-          automaticallyImplyLeading: true,
-          actions: const [],
-          centerTitle: true,
-          elevation: 4,
-        ),
-        body: SafeArea(
-          top: true,
-          child: Stack(
-            children: [
-              Align(
-                alignment: const AlignmentDirectional(-1.01, 0.6),
-                child: ElevatedButton(
-                  onPressed: () {
-                    print('Diet tracker pressed ...');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(156, 119),
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    backgroundColor: const Color(0xFF21D3CD),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 3,
-                  ),
-                  child: const Text(
-                    'Diet tracker',
-                    style: TextStyle(
-                      fontFamily: 'Readex Pro',
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(1.03, 0.6),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'vehicle');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(161, 119),
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    backgroundColor: const Color(0xFF14CAC5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 3,
-                  ),
-                  child: const Text(
-                    'Vehicle tracking',
-                    style: TextStyle(
-                      fontFamily: 'Readex Pro',
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      height: 1.5,
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(-0.01, -0.74),
-                child: CircularPercentIndicator(
-                  percent: 0.5,
-                  radius: 110,
-                  lineWidth: 20,
-                  animation: true,
-                  progressColor: const Color(0xFF0AC8C4),
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  center: const Text(
-                    '50%',
-                    style: TextStyle(
-                      fontFamily: 'Outfit',
-                      fontSize: 40,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ));
+    return MaterialApp.router(
+      title: 'carbon ',
+      localizationsDelegates: [
+        FFLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: _locale,
+      supportedLocales: const [Locale('en', '')],
+      theme: ThemeData(brightness: Brightness.light),
+      darkTheme: ThemeData(brightness: Brightness.dark),
+      themeMode: _themeMode,
+      routerConfig: _router,
+    );
   }
 }
