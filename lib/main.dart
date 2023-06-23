@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+void main() {
+  runApp(const HomePageWidget());
+}
+
 class HomePageWidget extends StatelessWidget {
   const HomePageWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return MaterialApp(
+        home: GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
@@ -96,6 +101,6 @@ class HomePageWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }
