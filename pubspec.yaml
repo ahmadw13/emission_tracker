@@ -39,7 +39,8 @@ dependencies:
   http: ^1.0.0
   geolocator: ^9.0.2
   percent_indicator: ^4.2.3
-
+  flutter_map: ^5.0.0
+  flutter_map_location_marker: ^7.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

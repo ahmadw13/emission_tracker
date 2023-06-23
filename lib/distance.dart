@@ -13,6 +13,7 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 
   final double a = pow(sin(dLat / 2), 2) +
       cos(lat1Rad) * cos(lat2Rad) * pow(sin(dLon / 2), 2);
+
   final double c = 2 * atan2(sqrt(a), sqrt(1 - a));
   final double distance = earthRadius * c;
 
