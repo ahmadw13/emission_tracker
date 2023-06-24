@@ -1,3 +1,6 @@
+import 'package:geolocator/geolocator.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -8,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'vehicle_model.dart';
 export 'vehicle_model.dart';
+import 'package:carbon/services.dart';
 
 class VehicleWidget extends StatefulWidget {
   const VehicleWidget({Key? key}) : super(key: key);
@@ -33,6 +37,10 @@ class _VehicleWidgetState extends State<VehicleWidget> {
 
     super.dispose();
   }
+
+  LocationService _locationTracker = LocationService();
+  Position? _firstPosition;
+  Position? _newPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +82,33 @@ class _VehicleWidgetState extends State<VehicleWidget> {
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
+                  child: FlutterMap(
+                    options: MapOptions(
+                      zoom: 9.2,
+                    ),
+                    children: [
+                      TileLayer(
+                        urlTemplate:
+                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        subdomains: const ['a', 'b', 'c'],
+                        maxZoom: 19,
+                      ),
+                      CurrentLocationLayer(
+                        followOnLocationUpdate: FollowOnLocationUpdate.always,
+                        turnOnHeadingUpdate: TurnOnHeadingUpdate.never,
+                        style: const LocationMarkerStyle(
+                          marker: DefaultLocationMarker(
+                            child: Icon(
+                              Icons.navigation,
+                              color: Colors.white,
+                            ),
+                          ),
+                          markerSize: Size(40, 40),
+                          markerDirection: MarkerDirection.heading,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Align(
@@ -100,7 +135,11 @@ class _VehicleWidgetState extends State<VehicleWidget> {
                       size: 60.0,
                     ),
                     onPressed: () {
-                      print('IconButton pressed ...');
+                      setState(() {
+                        LocationService.stopLocationUpdates();
+                        LocationService.getC();
+                      });
+                      print('stop ...');
                     },
                   ),
                 ),
@@ -113,21 +152,21 @@ class _VehicleWidgetState extends State<VehicleWidget> {
                   options: ['i3', 'i4', 'i5', 'v6', 'v8'],
                   onChanged: (val) =>
                       setState(() => _model.dropDownValue = val),
-                  width: 300.0,
-                  height: 50.0,
+                  width: 300,
+                  height: 50,
                   textStyle: FlutterFlowTheme.of(context).bodyMedium,
                   hintText: 'Please select engine type',
                   icon: Icon(
                     Icons.keyboard_arrow_down_rounded,
                     color: FlutterFlowTheme.of(context).secondaryText,
-                    size: 24.0,
+                    size: 24,
                   ),
-                  fillColor: Color(0x8303090F),
-                  elevation: 2.0,
+                  fillColor: Color(0x830073E6),
+                  elevation: 2,
                   borderColor: FlutterFlowTheme.of(context).alternate,
-                  borderWidth: 2.0,
-                  borderRadius: 8.0,
-                  margin: EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                  borderWidth: 2,
+                  borderRadius: 8,
+                  margin: EdgeInsetsDirectional.fromSTEB(16, 4, 16, 4),
                   hidesUnderline: true,
                   isSearchable: false,
                 ),
@@ -211,7 +250,11 @@ class _VehicleWidgetState extends State<VehicleWidget> {
                     size: 60.0,
                   ),
                   onPressed: () {
-                    print('IconButton pressed ...');
+                    setState(() {
+                      LocationService.startLocationUpdates();
+                    });
+
+                    print('start');
                   },
                 ),
               ),
